@@ -1,4 +1,5 @@
 <?php
+sm($chatID, $update);
 if ($msg == "/start") {
 sm($chatID, "Usa:
 /reply per un esempio di tastiera reply
@@ -15,9 +16,11 @@ sm($chatID , "Testiera nascosta", true, "nascondi");
 }
 if ($msg == "/inline") {
 $menu[] = array(
-"text" => "Ciao",
-"callback_data" => "test",
+array("text" => "Ciao",
+"callback_data" => "test"),
 );
 sm($chatID, "Tastiera Inline", $menu, "inline");
 }
+cb_reply($cbid, "NOTIFICA TIPO 1", false, $cbmid, "Messaggio Modificato");
+
 return 0;

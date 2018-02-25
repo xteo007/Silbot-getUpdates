@@ -1,5 +1,5 @@
 <?php
-$token = "TOKEN";
+$token = "532636616:AAGvsqSMuDtB5XBaSL2tdkxWVk1CHPpiMzU";
 $config = array(
 "action" => true, //true per mandare azioni come typing... e false per non mandare nulla
 "parse_mode"=> "html" ,//Formattazione presefinita messaggio, HTML, Markdown o none
