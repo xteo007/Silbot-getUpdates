@@ -26,13 +26,13 @@ echo $content. "\n";
 echo $msg;
 
 $vars = array_keys(get_defined_vars());
-for ($i = 0; $i < sizeOf($vars); $i++) {
-if (in_array($vars[$i], $save)) {
+foreach ($vars as $var) {
+if (in_array($var, $save)) {
 } else {
-    unset($$vars[$i]);
+    unset($$var);
 }
 }
-unset($vars,$i);
+unset($vars);
 }
 }
 ?>
