@@ -5,8 +5,11 @@ Versioni php testate: 5.0, 7.0
 
 #Installazione:(Ubuntu e debian)
 Installa i pacchetti `apt-get install screen php-json php php-curl -y`
+- - -
  `wget https://github.com/SilverOS/silverosbase/archive/master.zip`
+- - -
  `unzip master.zip`
+- - -
  `cd silverosbase-master`
  
 #Start del bot
