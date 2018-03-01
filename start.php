@@ -1,11 +1,12 @@
 <?php
-$token = "TOKEN";
+$token = "532636616:AAGvsqSMuDtB5XBaSL2tdkxWVk1CHPpiMzU";
 $config = array(
 "action" => true, //true per mandare azioni come typing... e false per non mandare nulla
 "parse_mode"=> "html" ,//Formattazione presefinita messaggio, HTML, Markdown o none
 "disabilitapreview" => false, //False per permettere il web preview, true per disabilitarla
 "tastiera" => "inline" ,//Tastiera preferita, inline per quella inline e reply per la replykeyboard
 "funziona_modificati" => true, //Scegli se far eseguire i messaggi modificati
+"funziona_inoltrati" => false, //Scegli se far eseguire i messaggi inoltrati
 );
 $save = array(
 "save","token", "config", //lista di variabili da salvare fra un'esecuzione e l'altra
