@@ -1,11 +1,21 @@
 <?php
 echo "Variabili";
 $isedited = $update["edited_message"];
-if ($isedited && $config["funziona_modificati"]) {
-$update['message'] = $update['edited_message'];
-if (!$config["funziona_modificati"]) {
+$isforwarded = $update["message"]["forward_from"];
+if (!$config["funziona_inoltrati"] && $isforwarded) {
 return;
 }
+if (!$config["funziona_modificati"] && $isedited) {
+return;
+}
+if ($isforwarded && $config["funziona_inoltrati"]) {
+$fromnome = $update["message"]["forward_from"]["first_name"];
+$fromcognome = $update["message"]["forward_from"]["last_name"];
+$fromusername = $update["message"]["forward_from"]["username"];
+$fromID = $update["message"]["forward_from"]["id"];
+}
+if ($isedited && $config["funziona_modificati"]) {
+$update['message'] = $update['edited_message'];
 }
 $chatID = $update["message"]["chat"]["id"];
 $userID = $update["message"]["from"]["id"];
@@ -45,4 +55,15 @@ $cognome = $update["callback_query"]["from"]["last_name"];
 $username = $update["callback_query"]["from"]["username"];
 $fullname = $nome . " ". $cognome;
 $lingua = $update["callback_query"]["from"]["language_code"];
+}
+if ($update["message"]["reply_to_message"]) {
+$replymsg = $update["message"]["reply_to_message"]["text"];
+$replyid = $update["message"]["reply_to_message"]["message_id"];
+$replynome = $update["message"]["reply_to_message"]["first_name"];
+$replycognome = $update["message"]["reply_to_message"]["last_name"];
+$replyusername = $update["message"]["reply_to_message"]["username"];
+$replyfromnome = $update["message"]["reply_to_message"]["forward_from"]["first_name"];
+$replyfromcognome = $update["message"]["reply_to_message"]["forward_from"]["last_name"];
+$replyfromusername = $update["message"] ["reply_to_message"]["forward_from"]["username"];
+$replyfromID = $update["message"]["reply_to_message"]["forward_from"]["id"];
 }
