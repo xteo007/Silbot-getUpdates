@@ -1,5 +1,6 @@
 <?php
 echo "Funzioni\n";
+
 function sr($method, $args){
 global $token;
 $query = http_build_query($args);
