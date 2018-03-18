@@ -303,6 +303,38 @@ if($menu) $args['reply_markup'] = $rm;
 		}
 	sr("sendVoice", $args);
 	}
+//sendSticker
+function ss($chatID, $sticker,$menu= false, $keyboardtype = false, $reply_to_message=false) {
+	global $token;
+	global $config;
+if (!$keyboardtype && $menu) {
+$keyboardtype = $config['tastiera'];
+}
+if ($keyboardtype == "reply") {
+	$rm = array('keyboard' => $menu,
+'resize_keyboard' => true
+);
+} elseif ($keyboardtype == "inline") {
+$rm = array('inline_keyboard' => $menu,
+);
+} elseif ($keyboardtype == "nascondi") {
+
+$rm = array('hide_keyboard' => true
+);
+}
+$rm = json_encode($rm);
+	
+	$args = array(
+	"chat_id" => $chatID,
+	"sticker" => $sticker,
+	"reply_to_message_id" => $reply_to_message,
+	);
+if($menu) $args['reply_markup'] = $rm;
+	if ($config['action']) {
+		action($chatID, "typing");
+		}
+	sr("sendSticker", $args);
+	}
 //sendVideoNote
 	function svn($chatID, $video_note ,$menu= false, $keyboardtype = false, $parse_mode=false, $reply_to_message=false) {
 	global $token;
@@ -414,3 +446,77 @@ if($menu) $args['reply_markup'] = $rm;
 		}
 	sr("sendContact", $args);
 	}
+
+//GRUPPI
+function deleteChatPhoto($chatID){
+global $token;
+$args = array(
+"chat_id" => $chatID,
+);
+sr("deleteChatPhoto", $args);
+}
+function ban($chatID, $userID, $time=0)
+{
+global $api;
+$args = array(
+'chat_id' => $chatID,
+'user_id' => $userID,
+'until_date' => $time,
+);
+sr("kickChatMember", $args);
+}
+function unban($chatID, $userID)
+{
+global $api;
+$args = array(
+'chat_id' => $chatID,
+'user_id' => $userID
+);
+sr("unbanChatMember", $args);
+}
+//fissa
+function fissa($chatID, $msgid)
+{
+global $api;
+$args = array(
+'chat_id' => $chatID,
+'message_id' => $msgid,
+);
+sr("pinChatMessage", $args);
+}
+function restrictChatMembers($chatID, $userID, $dateRelase, $sendMsg, $sendMedia, $sendOther, $WPPreview){
+global $token;
+$args = array(
+"chat_id" => $chatID,
+"user_id" => $userID,
+"until_date" => $dateRelase,
+"can_send_messages" => $sendMsg,
+"can_send_media_messages" => $sendMedia,
+"can_send_other_messages" => $sendOther,
+"can_add_web_page_previews" => $WPPreview
+);
+sr("restrictChatMembers", $args);
+}
+function promoteChatMembers($chatID, $userID, $changeInfo, $postMsg, $modifyMsg, $deleteMsg, $inviteUsers, $restrictUsers, $pinMsg, $promoteUsers ){
+global $token;
+$args = array(
+"chat_id" => $chatID,
+"user_id" => $userID,
+"can_change_info" => $changeInfo,
+"can_post_messages" => $postMsg,
+"can_edit_messages" => $modifyMsg,
+"can_delete_messages" => $deleteMsg,
+"can_invite_users" => $inviteUsers,
+"can_restrict_members" => $restrictUsers,
+"can_pin_messages" => $pinMsg,
+"can_promote_members" => $promoteUsers
+);
+sr("promoteChatMembers", $args);
+}
+function exportChatInviteLink($chatID){
+global $token;
+$args = array(
+"chat_id" => $chatID,
+);
+sr("exportChatInviteLink", $args);
+}
