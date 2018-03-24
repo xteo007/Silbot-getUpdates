@@ -1,5 +1,5 @@
 <?php
-$token = "552519070:AAGhLTjicJ-f6aVxAwIz09H7guYnreUS_i8";
+$token = "TOKEN";
 $config = array(
 "debug_mode" => false, //Metti true per mostrare gli errori, false per non mostrarli
 "action" => true, //true per mandare azioni come typing... e false per non mandare nulla
