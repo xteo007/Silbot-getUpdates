@@ -3,15 +3,25 @@ echo "Funzioni\n";
 
 function sr($method, $args){
 global $token;
-$query = http_build_query($args);
-	file_get_contents("http://api.telegram.org/bot$token/$method?".$query);
+$args = http_build_query($args);
+	        $request = curl_init("https://api.telegram.org/bot$token/$method");   
+            curl_setopt_array($request, array(
+            CURLOPT_CONNECTTIMEOUT => 1,
+            CURLOPT_RETURNTRANSFER => 1,
+            CURLOPT_USERAGENT => 'cURL request',
+            CURLOPT_POST => 1,
+            CURLOPT_POSTFIELDS => $args,
+        ));
+        $result = curl_exec($request);
+        curl_close($request);
+return $result;
 }
 function action($chatID, $action) {
 $args = array(
 "chat_id" => $chatID,
 "action" => $action,
 );
-sr("sendChatAction", $args);
+return sr("sendChatAction", $args);
 }
 function sm($chatID, $msg, $menu= false, $keyboardtype = false, $parse_mode=false, $reply_to_message=false, $disablewebpreview = false) {
 	global $token;
@@ -50,7 +60,7 @@ if($menu) $args['reply_markup'] = $rm;
 	if ($config['action']) {
 		action($chatID, "typing");
 		}
-	sr("sendMessage", $args);
+return	sr("sendMessage", $args);
 	}
 function em($chatID, $msg, $msgid, $menu= false, $keyboardtype = false, $parse_mode=false, $reply_to_message=false, $disablewebpreview = false) {
 global $token;
@@ -86,7 +96,7 @@ $rm = json_encode($rm);
 	"disable_web_page_preview" => $disablewebpreview,
    "message_id" => $msgid,
 	);
-	sr("sendMessage", $args);
+	return sr("sendMessage", $args);
 }
 function cb_reply($id, $text, $alert = false, $cbmid = false, $ntext = false, $nmenu = false, $npm = "pred")
 {
@@ -115,7 +125,7 @@ $args = array(
 'parse_mode' => $npm,
 );
 if($nmenu) $args["reply_markup"] = $rm;
-$r = sr("editMessageText", $args);
+return sr("editMessageText", $args);
 }
 }
 //sendPhoto
@@ -153,7 +163,7 @@ if($menu) $args['reply_markup'] = $rm;
 	if ($config['action']) {
 		action($chatID, "typing");
 		}
-	sr("sendPhoto", $args);
+	return sr("sendPhoto", $args);
 	}
 function sa($chatID, $audio, $caption = false,$menu= false, $keyboardtype = false, $parse_mode=false, $reply_to_message=false, $autore = "false", $titolo = "false") {
 	global $token;
@@ -191,7 +201,7 @@ if($menu) $args['reply_markup'] = $rm;
 	if ($config['action']) {
 		action($chatID, "typing");
 		}
-	sr("sendAudio", $args);
+	return sr("sendAudio", $args);
 	}
 function sd($chatID, $document, $caption = false,$menu= false, $keyboardtype = false, $parse_mode=false, $reply_to_message=false) {
 	global $token;
@@ -227,7 +237,7 @@ if($menu) $args['reply_markup'] = $rm;
 	if ($config['action']) {
 		action($chatID, "typing");
 		}
-	sr("sendDocument", $args);
+	return sr("sendDocument", $args);
 	}
 	//sendVideo
 function sv($chatID, $video, $caption = false,$menu= false, $keyboardtype = false, $parse_mode=false, $reply_to_message=false) {
@@ -264,7 +274,7 @@ if($menu) $args['reply_markup'] = $rm;
 	if ($config['action']) {
 		action($chatID, "typing");
 		}
-	sr("sendVideo", $args);
+	return sr("sendVideo", $args);
 	}
 //sendVoice
 function svc($chatID, $voice, $caption = false,$menu= false, $keyboardtype = false, $parse_mode=false, $reply_to_message=false) {
@@ -301,7 +311,7 @@ if($menu) $args['reply_markup'] = $rm;
 	if ($config['action']) {
 		action($chatID, "typing");
 		}
-	sr("sendVoice", $args);
+	return sr("sendVoice", $args);
 	}
 //sendSticker
 function ss($chatID, $sticker,$menu= false, $keyboardtype = false, $reply_to_message=false) {
@@ -333,7 +343,7 @@ if($menu) $args['reply_markup'] = $rm;
 	if ($config['action']) {
 		action($chatID, "typing");
 		}
-	sr("sendSticker", $args);
+	return sr("sendSticker", $args);
 	}
 //sendVideoNote
 	function svn($chatID, $video_note ,$menu= false, $keyboardtype = false, $parse_mode=false, $reply_to_message=false) {
@@ -369,7 +379,7 @@ if($menu) $args['reply_markup'] = $rm;
 	if ($config['action']) {
 		action($chatID, "typing");
 		}
-	sr("sendVideoNote", $args);
+	return sr("sendVideoNote", $args);
 	}
 //sendLocation
 function sl($chatID, $latitude,$longitude,$menu= false, $keyboardtype = false, $parse_mode=false, $reply_to_message=false, $live_period = false) {
@@ -407,7 +417,7 @@ if($menu) $args['reply_markup'] = $rm;
 	if ($config['action']) {
 		action($chatID, "typing");
 		}
-	sr("sendLocation", $args);
+	return sr("sendLocation", $args);
 	}
 function sc($chatID, $phone_number, $first_name, $last_name=false,$menu= false, $keyboardtype = false, $parse_mode=false, $reply_to_message=false) {
 	global $token;
@@ -444,16 +454,42 @@ if($menu) $args['reply_markup'] = $rm;
 	if ($config['action']) {
 		action($chatID, "typing");
 		}
-	sr("sendContact", $args);
+	return sr("sendContact", $args);
 	}
+function sendVenue($chatID, $latitude, $longitude, $title  ,$address, $reply_to_message_id=false) {
 
+}
+function smg($chatID, $media, $reply_to_message_id=false) {
+$args = array(
+'chat_id' => $chatID,
+'media' => json_encode($media),
+"reply_to_message_id" => $reply_to_message_id,
+);
+return sr("sendMediaGroup", $args);
+}
 //GRUPPI
 function deleteChatPhoto($chatID){
 global $token;
 $args = array(
 "chat_id" => $chatID,
 );
-sr("deleteChatPhoto", $args);
+return sr("deleteChatPhoto", $args);
+}
+function setChatPhoto($chatID, $photo){
+global $token;
+$args = array(
+"chat_id" => $chatID,
+"photo" => $photo,
+);
+return sr("setChatPhoto", $args);
+}
+function setChatTitle($chatID, $titolo){
+global $token;
+$args = array(
+"chat_id" => $chatID,
+"title" => $titolo,
+);
+return sr("setChatTitle", $args);
 }
 function ban($chatID, $userID, $time=0)
 {
@@ -463,7 +499,7 @@ $args = array(
 'user_id' => $userID,
 'until_date' => $time,
 );
-sr("kickChatMember", $args);
+return sr("kickChatMember", $args);
 }
 function unban($chatID, $userID)
 {
@@ -472,7 +508,7 @@ $args = array(
 'chat_id' => $chatID,
 'user_id' => $userID
 );
-sr("unbanChatMember", $args);
+return sr("unbanChatMember", $args);
 }
 //fissa
 function fissa($chatID, $msgid)
@@ -482,7 +518,7 @@ $args = array(
 'chat_id' => $chatID,
 'message_id' => $msgid,
 );
-sr("pinChatMessage", $args);
+return sr("pinChatMessage", $args);
 }
 function restrictChatMembers($chatID, $userID, $dateRelase, $sendMsg, $sendMedia, $sendOther, $WPPreview){
 global $token;
@@ -495,7 +531,7 @@ $args = array(
 "can_send_other_messages" => $sendOther,
 "can_add_web_page_previews" => $WPPreview
 );
-sr("restrictChatMembers", $args);
+return sr("restrictChatMembers", $args);
 }
 function promoteChatMembers($chatID, $userID, $changeInfo, $postMsg, $modifyMsg, $deleteMsg, $inviteUsers, $restrictUsers, $pinMsg, $promoteUsers ){
 global $token;
@@ -511,12 +547,12 @@ $args = array(
 "can_pin_messages" => $pinMsg,
 "can_promote_members" => $promoteUsers
 );
-sr("promoteChatMembers", $args);
+return sr("promoteChatMembers", $args);
 }
 function exportChatInviteLink($chatID){
 global $token;
 $args = array(
 "chat_id" => $chatID,
 );
-sr("exportChatInviteLink", $args);
+return sr("exportChatInviteLink", $args);
 }
