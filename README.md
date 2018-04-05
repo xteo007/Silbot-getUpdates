@@ -12,7 +12,16 @@ Installa i pacchetti `apt-get install screen php-json php php-curl -y`
  `unzip master.zip`
  
  `cd silverosbase-master`
- 
+# DATABASE MYSQL
+- - -
+Dall'aggiornamento alla 0.5 la base supporta le connessioni a mysql integrate tramite PDO.
+
+Installare il database è fondamentale per l'uso di alcuni plugin.
+*SE NON SI VUOLE USARE IL DATABASE MYSQL BASTA IMPOSTARE A false IL CAMPO DB DEL CONFIG*
+Installazione del database:
+ `php db_install.php`
+Avvia la procedura di installazione, compila tutti i campi come ti viene chiesto.
+ A questo punto modificate le impostazioni nel config in start.php riguardanti mysql.
 # Start del bot
  - - -
 1) Cambia il token in start.php
