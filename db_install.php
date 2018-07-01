@@ -1,5 +1,11 @@
 <?php
-$tabella = "bot";
+ins:
+$config['tipo_db'] =readLine("Tipo database (json/mysql):");
+if ($config['tipo_db'] == "json") {
+	touch("database.json");
+echo "DATABASE INSTALLATO";	
+	
+} elseif ($config['tipo_db'] == "mysql") {
 $config['ip'] =readLine("IP database (def. Localhost):");
 $config['user'] =readLine("User database (def. root):");
 $config['database'] =readLine("Nome database:");
@@ -13,4 +19,8 @@ chat_id bigint(0),
 username varchar(200),
 page varchar(200),
 PRIMARY KEY (id))");
-echo "DATABASE INSTALLATO";
+} else {
+echo "Errore: Tipo Database non trovato\n";
+goto ins;
+}
+
