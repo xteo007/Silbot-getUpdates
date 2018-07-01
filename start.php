@@ -1,5 +1,5 @@
 ﻿<?php
-$token = "504198873:AAEKAK6gNw1EVtzp0dwiMBk9Mwx9rKFX_RI";
+$token = "TOKEN";
 $admin = array( //inserisci gli ID degli admin per il plugin utenti
 141691961,
 1123344,);
