@@ -1,8 +1,12 @@
-<?php
-$token = "token";
-
+﻿<?php
+$token = "504198873:AAEKAK6gNw1EVtzp0dwiMBk9Mwx9rKFX_RI";
+$admin = array( //inserisci gli ID degli admin per il plugin utenti
+141691961,
+1123344,);
 $config = array(
 "db" => true, // true per usare un database mysql, false per non usarlo
+"tipo_db" => "json", //"mysql" per un database mysql, "json" per un database attraverso file json
+
 //DATABASE
 "ip" => "localhost", // se non usi altervista metti l'indirizzo del database, di norma localhost se è hostato sullo stesso server
 "user" => "root", //se non usi altervista inserisci il nome utente del DB
@@ -18,7 +22,7 @@ $config = array(
 "funziona_modificati" => true, //Scegli se far eseguire i messaggi modificati
 "funziona_inoltrati" => false, //Scegli se far eseguire i messaggi inoltrati
 );
-if ($config['db']) {
+if ($config['db'] && $config['tipo_db'] == "mysql") {
 	$db = new PDO("mysql:host=" . $config["ip"] . ";dbname=".$config['database'], $config['user'], $config['password']); 
 	}
 if ($config['debug_mode']) {
@@ -27,19 +31,28 @@ error_reporting(E_ALL);
 error_reporting(0);
 }
 $save = array(
-"save","token", "config", "db", "disable"//lista di variabili da salvare fra un'esecuzione e l'altra
+"save","token", "config", "db", "disable", "offset", "admin"//lista di variabili da salvare fra un'esecuzione e l'altra
 );
 echo "Bot started\n";
 include("functions.php");
+$c1 = file_get_contents("http://api.telegram.org/bot$token/getUpdates?offset=-1");
+$up1 = json_decode($c1, true);
+$offset = $up1["result"][0]["update_id"];
+if (!$offset) {
+	echo "\nC'è stato un errore con l'offset, per risolverlo invia un update al bot e riavvia lo script\n";
+	exit;
+}
 while(1) {
 $l = file_get_contents("last.json");
-$content = file_get_contents("http://api.telegram.org/bot$token/getUpdates?offset=-1");
-if ($l == $content) {
+$content = file_get_contents("http://api.telegram.org/bot$token/getUpdates?offset=$offset");
+if ($l == $content || $content == '{"ok":true,"result":[]}') {
 } else {
-$update = json_decode($content, true);
-$update = $update['result'][0];
+$offset++;
 file_put_contents("last.json", $content);
+$update = json_decode($content, true);
+$update = $update["result"][0];
 include("vars.php");
+if (in_array($chatID, $admin))  {$isadmin = true;}
 if ($config['db']) {
 include("database.php");
 }
