@@ -1,7 +1,37 @@
 <?php
 
 echo "Database\n";
-
+if ($config['tipo_db'] == "json"){
+	$dbcontent = json_decode(file_get_contents("database.json"), true);
+	if (!$dbcontent[$chatID]) {
+		if ($chatID == $userID) {
+		$dbcontent[$chatID] = array(
+		"chat_id" => $chatID,
+		"username" => "$username",
+		"page" => "",
+		);
+		} else {
+		$dbcontent[$chatID] = array(
+		"chat_id" => $chatID,
+		"username" => "$usernamechat",
+		"page" => "",
+		);
+		if (!in_array($userID, $dbcontent)) {
+		$dbcontent[$userID] = array(
+		"chat_id" => $userID,
+		"username" => "$username",
+		"page" => "group",
+		);
+		}
+		}
+	} else {
+		if ($dbcontent[$chatID]["page"] == "ban") {
+			sm($chatID, "Sei bannato dall'utilizzo del Bot.");
+exit;
+		}
+	}
+file_put_contents("database.json", json_encode($dbcontent));
+} elseif ($config['tipo_db'] == "mysql") {
 $tabella = $config['tabella'];
 if ($chatID) {
 $q = $db->query("select * from $tabella where chat_id = $chatID");
@@ -31,6 +61,7 @@ if($u['page'] == "ban")
 {
 sm($chatID, "Sei bannato dall'utilizzo del Bot.");
 exit;
+}
 }
 }
 }
