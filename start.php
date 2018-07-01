@@ -5,7 +5,7 @@ $admin = array( //inserisci gli ID degli admin per il plugin utenti
 1123344,);
 $config = array(
 "db" => true, // true per usare un database mysql, false per non usarlo
-"tipo_db" => "json", //"mysql" per un database mysql, "json" per un database attraverso file json
+"tipo_db" => "mysql", //"mysql" per un database mysql, "json" per un database attraverso file json
 
 //DATABASE
 "ip" => "localhost", // se non usi altervista metti l'indirizzo del database, di norma localhost se è hostato sullo stesso server
