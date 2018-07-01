@@ -1,17 +1,17 @@
 <?php
-echo "Funzioni\n";
+echo "<br />Funzioni";
 
 function sr($method, $args){
 global $token;
 $args = http_build_query($args);
-	        $request = curl_init("https://api.telegram.org/bot$token/$method");   
-            curl_setopt_array($request, array(
-            CURLOPT_CONNECTTIMEOUT => 1,
-            CURLOPT_RETURNTRANSFER => 1,
-            CURLOPT_USERAGENT => 'cURL request',
-            CURLOPT_POST => 1,
-            CURLOPT_POSTFIELDS => $args,
-        ));
+       $request = curl_init("https://api.telegram.org/bot$token/$method");   
+        curl_setopt_array($request, array(
+       CURLOPT_CONNECTTIMEOUT => 1,
+       CURLOPT_RETURNTRANSFER => 1,
+      CURLOPT_USERAGENT => 'cURL request',
+      CURLOPT_POST => 1,
+     CURLOPT_POSTFIELDS => $args,
+  ));
         $result = curl_exec($request);
         curl_close($request);
 return $result;
@@ -60,7 +60,7 @@ if($menu) $args['reply_markup'] = $rm;
 	if ($config['action']) {
 		action($chatID, "typing");
 		}
-return	sr("sendMessage", $args);
+	return sr("sendMessage", $args);
 	}
 function em($chatID, $msg, $msgid, $menu= false, $keyboardtype = false, $parse_mode=false, $reply_to_message=false, $disablewebpreview = false) {
 global $token;
@@ -109,7 +109,7 @@ $args = array(
 'text' => $text,
 'show_alert' => $alert
 );
-$r = sr("answerCallbackQuery", $args);
+$r = return sr("answerCallbackQuery", $args);
 if($cbmid)
 {
 if($nmenu)
@@ -125,7 +125,7 @@ $args = array(
 'parse_mode' => $npm,
 );
 if($nmenu) $args["reply_markup"] = $rm;
-return sr("editMessageText", $args);
+$r = return sr("editMessageText", $args);
 }
 }
 //sendPhoto
@@ -381,6 +381,15 @@ if($menu) $args['reply_markup'] = $rm;
 		}
 	return sr("sendVideoNote", $args);
 	}
+//deleteMessage
+function dm($chatID, $msgid){
+global $token;
+$args = array(
+"chat_id" => $chatID,
+"message_id" => $msgid,
+);
+return return sr("deleteMessage", $args);
+}
 //sendLocation
 function sl($chatID, $latitude,$longitude,$menu= false, $keyboardtype = false, $parse_mode=false, $reply_to_message=false, $live_period = false) {
 	global $token;
@@ -456,17 +465,7 @@ if($menu) $args['reply_markup'] = $rm;
 		}
 	return sr("sendContact", $args);
 	}
-function sendVenue($chatID, $latitude, $longitude, $title  ,$address, $reply_to_message_id=false) {
 
-}
-function smg($chatID, $media, $reply_to_message_id=false) {
-$args = array(
-'chat_id' => $chatID,
-'media' => json_encode($media),
-"reply_to_message_id" => $reply_to_message_id,
-);
-return sr("sendMediaGroup", $args);
-}
 //GRUPPI
 function deleteChatPhoto($chatID){
 global $token;
@@ -474,22 +473,6 @@ $args = array(
 "chat_id" => $chatID,
 );
 return sr("deleteChatPhoto", $args);
-}
-function setChatPhoto($chatID, $photo){
-global $token;
-$args = array(
-"chat_id" => $chatID,
-"photo" => $photo,
-);
-return sr("setChatPhoto", $args);
-}
-function setChatTitle($chatID, $titolo){
-global $token;
-$args = array(
-"chat_id" => $chatID,
-"title" => $titolo,
-);
-return sr("setChatTitle", $args);
 }
 function ban($chatID, $userID, $time=0)
 {
@@ -520,7 +503,7 @@ $args = array(
 );
 return sr("pinChatMessage", $args);
 }
-function restrictChatMembers($chatID, $userID, $dateRelase, $sendMsg, $sendMedia, $sendOther, $WPPreview){
+function limita($chatID, $userID, $dateRelase, $sendMsg, $sendMedia, $sendOther, $WPPreview){
 global $token;
 $args = array(
 "chat_id" => $chatID,
@@ -549,10 +532,45 @@ $args = array(
 );
 return sr("promoteChatMembers", $args);
 }
-function exportChatInviteLink($chatID){
+function getlink($chatID){
 global $token;
 $args = array(
 "chat_id" => $chatID,
 );
-return sr("exportChatInviteLink", $args);
+return return sr("exportChatInviteLink", $args);
 }
+if ($config['db']){
+if ($config['tipo_db'] == "json") {
+function username($id) {
+	global $dbcontent;
+return $dbcontent[$id]['username'];
+}
+function id($username) {
+	global $dbcontent;
+	$username = str_replace("@", "", $username);
+	$key= array_search($username, array_column($dbcontent, "username","chat_id"));
+return $key;
+}
+function jsonsave() {
+global $dbcontent;
+file_put_contents("database.json", json_encode($dbcontent));
+}
+	} elseif ($config['tipo_db'] == "mysql") {
+function id($username) {
+	global $userbot;
+   global $db;
+$username = str_replace("@", "", $username);
+$q = $db->query("select * from `$userbot` where username = '" . $username ."'");
+$u = $q->fetch(PDO::FETCH_ASSOC);
+return $u['chat_id'];
+}
+function username($id) {
+	global $userbot;
+   global $db;
+$q = $db->query("select * from `$userbot` where chat_id = $id");
+$u = $q->fetch(PDO::FETCH_ASSOC);
+return $u['username'];
+}
+}
+}
+
