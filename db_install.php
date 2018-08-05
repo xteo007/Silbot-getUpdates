@@ -19,6 +19,7 @@ chat_id bigint(0),
 username varchar(200),
 page varchar(200),
 PRIMARY KEY (id))");
+echo "Database installato.";
 } else {
 echo "Errore: Tipo Database non trovato\n";
 goto ins;
