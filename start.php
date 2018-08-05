@@ -13,6 +13,7 @@ $config = array(
 "password" => "psw", //se non usi altervista inserisci la password di mysql
 "database" => "db", //se non usi altervista inserisci il nome del database
 "tabella" => "tabella", //Tabella predefinita del bot
+"antiflood" => false,//true per abilitare l'antiflood, false per disabilitarlo. Trovi il file in plugins/antiflood.php. Funziona solo con Mysql
 //TELEGRAM
 "debug_mode" => false, //Metti true per mostrare gli errori, false per non mostrarli
 "action" => true, //true per mandare azioni come typing... e false per non mandare nulla
@@ -55,7 +56,19 @@ include("vars.php");
 if (in_array($chatID, $admin))  {$isadmin = true;}
 if ($config['db']) {
 include("database.php");
+if ($ban) {
+$vars = array_keys(get_defined_vars());
+foreach ($vars as $var) {
+if (in_array($var, $save)) {
+} else {
+    unset($$var);
 }
+}
+unset($vars);
+continue;
+}
+}
+
 include("comandi.php");
 $plugins = scandir("plugins");
 $disable = array("pluginno.php");
