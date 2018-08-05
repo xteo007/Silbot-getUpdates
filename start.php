@@ -25,7 +25,7 @@ $config = array(
 );
 if ($config['db'] && $config['tipo_db'] == "mysql") {
 	$db = new PDO("mysql:host=" . $config["ip"] . ";dbname=".$config['database'], $config['user'], $config['password']); 
-	}
+}
 if ($config['debug_mode']) {
 error_reporting(E_ALL);
 } else {
