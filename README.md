@@ -1,4 +1,4 @@
-# SilverOSbase getUpdates
+# SilBot getUpdates
 Base per bot telegram in php che usa il metodo getupdates.
 La base funziona solo su VPS.
 Versioni php testate: 5.0, 7.0
@@ -7,7 +7,7 @@ Versioni php testate: 5.0, 7.0
 - - -
 Installa i pacchetti `apt-get install screen php-json php php-curl -y`
 
- `wget https://github.com/SilverOS/silverosbase/archive/master.zip`
+ `wget https://github.com/SilverOS/Silbot-getUpdates/archive/master.zip`
 
  `unzip master.zip`
  
