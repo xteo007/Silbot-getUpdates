@@ -27,13 +27,13 @@ if ($config['tipo_db'] == "json"){
 	} else {
 		if ($dbcontent[$chatID]["page"] == "ban") {
 			sm($chatID, "Sei bannato dall'utilizzo del Bot.");
-exit;
+			$ban = true;
 		}
 	}
 file_put_contents("database.json", json_encode($dbcontent));
 } elseif ($config['tipo_db'] == "mysql") {
 $tabella = $config['tabella'];
-if ($chatID) {
+if ($chatID < 0) {
 $q = $db->query("select * from $tabella where chat_id = $chatID");
 if(!$q->rowCount())
 {
@@ -60,7 +60,7 @@ $db->query("update $tabella set page = '' where chat_id = $chatID");
 if($u['page'] == "ban")
 {
 sm($chatID, "Sei bannato dall'utilizzo del Bot.");
-exit;
+$ban = true;
 }
 }
 }

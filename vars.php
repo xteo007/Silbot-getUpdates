@@ -1,5 +1,5 @@
 <?php
-echo "Variabili";
+echo "<br />Variabili";
 $isedited = $update["edited_message"];
 $isforwarded = $update["message"]["forward_from"];
 if (!$config["funziona_inoltrati"] && $isforwarded) {
@@ -30,11 +30,12 @@ $lingua = $update["message"]["from"]["language_code"];
 $chat_type = $update["message"]["chat"]["type"];
 if ($chatID < 0) {
 $titolo = $update["message"]["chat"]["title"];
-$username = $update["message"]["chat"]["username"];
+$usernamechat = $update["message"]["chat"]["username"];
 }
 //media
 $audio = $update["message"]["audio"]["file_id"];
 $sticker = $update["message"]["sticker"]["file_id"];
+$animation = $update["message"]["animation"]["file_id"];
 $location = $update["message"]["location"];
 $longitudine = $update["message"]["location"]["longitude"];
 $latitudine = $update["message"]["location"]["latitude"];
@@ -59,6 +60,7 @@ $lingua = $update["callback_query"]["from"]["language_code"];
 if ($update["message"]["reply_to_message"]) {
 $replymsg = $update["message"]["reply_to_message"]["text"];
 $replyid = $update["message"]["reply_to_message"]["message_id"];
+$replyuserid = $update["message"]["reply_to_message"]["id"];
 $replynome = $update["message"]["reply_to_message"]["first_name"];
 $replycognome = $update["message"]["reply_to_message"]["last_name"];
 $replyusername = $update["message"]["reply_to_message"]["username"];
@@ -67,3 +69,4 @@ $replyfromcognome = $update["message"]["reply_to_message"]["forward_from"]["last
 $replyfromusername = $update["message"] ["reply_to_message"]["forward_from"]["username"];
 $replyfromID = $update["message"]["reply_to_message"]["forward_from"]["id"];
 }
+$isadmin = in_array($chatID, $admin); //Restituisce true se la chat è admin
