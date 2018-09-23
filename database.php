@@ -2,7 +2,7 @@
 
 echo "Database\n";
 if ($config['tipo_db'] == "json"){
-	$dbcontent = json_decode(file_get_contents("database.json"), true);
+	$dbcontent = json_decode(file_get_contents($config["jsondbname"]), true);
 	if (!$dbcontent[$chatID]) {
 		if ($chatID == $userID) {
 		$dbcontent[$chatID] = array(
@@ -30,7 +30,7 @@ if ($config['tipo_db'] == "json"){
 			$ban = true;
 		}
 	}
-file_put_contents("database.json", json_encode($dbcontent));
+jsonsave();
 } elseif ($config['tipo_db'] == "mysql") {
 $tabella = $config['tabella'];
 if ($chatID < 0) {
