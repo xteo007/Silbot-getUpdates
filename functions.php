@@ -95,6 +95,37 @@ function em($chatID, $msg, $msgid, $menu= false, $keyboardtype = false, $parse_m
 	);
 	return sr("sendMessage", $args);
 }
+function editMessageCaption($chatID, $caption, $msgid,$parse_mode) {
+	global $token;
+	global $config;
+	if (!$keyboardtype && $menu) {
+		$keyboardtype = $config['tastiera'];
+	}
+	if ($keyboardtype == "reply") {
+		$rm = array('keyboard' => $menu,
+		'resize_keyboard' => true);
+	} elseif ($keyboardtype == "inline") {
+		$rm = array('inline_keyboard' => $menu);
+	} elseif ($keyboardtype == "nascondi") {
+		$rm = array('hide_keyboard' => true);
+	}
+	$rm = json_encode($rm);
+	
+    if (!$parse_mode) {
+		$parse_mode = $config['parse_mode'];
+	}
+	if (!$disablewebpreview) {
+		$disablewebpreview = $config['disabilitapreview'];
+	}
+	$args = array(
+	"chat_id" => $chatID,
+	"caption" => $caption,
+	"parse_mode" => $parse_mode,
+        "message_id" => $msgid,
+	);
+
+    
+}
 function cb_reply($id, $text, $alert = false, $cbmid = false, $ntext = false, $nmenu = false, $npm = "pred")
 {
 	global $api;
@@ -672,7 +703,9 @@ return $key;
 }
 function jsonsave() {
 global $dbcontent;
-file_put_contents("database.json", json_encode($dbcontent));
+global $config;
+$f = fopen($config["jsondbname"],"w+");
+fwrite($f, json_encode($dbcontent, JSON_PRETTY_PRINT));
 }
 	} elseif ($config['tipo_db'] == "mysql") {
 function id($username) {
