@@ -14,6 +14,8 @@ $config = array(
 "database" => "db", //se non usi altervista inserisci il nome del database
 "tabella" => "tabella", //Tabella predefinita del bot
 "antiflood" => false,//true per abilitare l'antiflood, false per disabilitarlo. Trovi il file in plugins/antiflood.php. Funziona solo con Mysql
+//Json
+"jsondbname" => "database.json", //Il nome del file che contiene il database json o il path
 //TELEGRAM
 "debug_mode" => false, //Metti true per mostrare gli errori, false per non mostrarli
 "action" => true, //true per mandare azioni come typing... e false per non mandare nulla
@@ -22,10 +24,11 @@ $config = array(
 "tastiera" => "inline" ,//Tastiera preferita, inline per quella inline e reply per la replykeyboard
 "funziona_modificati" => true, //Scegli se far eseguire i messaggi modificati
 "funziona_inoltrati" => false, //Scegli se far eseguire i messaggi inoltrati
+"funziona_canali" => true, //Scegli se far eseguire i messaggi inviati dai canali
 );
 if ($config['db'] && $config['tipo_db'] == "mysql") {
 	$db = new PDO("mysql:host=" . $config["ip"] . ";dbname=".$config['database'], $config['user'], $config['password']); 
-}
+	}
 if ($config['debug_mode']) {
 error_reporting(E_ALL);
 } else {
